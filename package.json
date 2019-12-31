@@ -1,0 +1,36 @@
+{
+  "name": "shopify-app-tags-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixelter/shopify-app-tags-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pixelter/shopify-app-tags-server/issues"
+  },
+  "homepage": "https://github.com/pixelter/shopify-app-tags-server#readme",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.18.2",
+    "prettier": "1.19.1",
+    "serverless-webpack": "^5.3.1"
+  },
+  "dependencies": {
+    "@pixelter/sls-response-helper": "^1.0.4",
+    "async": "^3.1.0",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.7.13",
+    "nonce": "^1.0.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "shopify-api-node": "^2.25.1"
+  }
+}

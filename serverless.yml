@@ -1,0 +1,59 @@
+service: shopify-app-tags
+app: shopify-app-tags
+org: pixelter
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, 'dev'}
+  shopifyConfig: ${file(./config/shopify.${opt:stage}.json)
+  databaseConfig: ${file(./config/database.${opt:stage}.json)}
+  hostConfig: ${file(./config/host.${opt:stage}.json)}
+  environment:
+    # Shopify App
+    SHOPIFY_APP_KEY: ${self:shopifyConfig.apiKey}
+    SHOPIFY_APP_SECRET: ${self:shopifyConfig.apiSecret}
+    SHOPIFY_APP_ID: ${self:shopifyConfig.id}
+    SHOPIFY_SCOPES: ${self:shopifyConfig.scopes}
+    # Database
+    DB_URL: ${self:databaseConfig.url}
+    # Host
+    APP_HOST: ${self:hostConfig.url}
+
+functions:
+  install:
+    handler: src/shopify/install.handle
+    events:
+      - http:
+          path: install
+          method: get
+  shopifyCronRegural:
+    handler: src/shopify/cron.regural
+    timeout: 600
+    events:
+      - schedule: rate(4 hours)
+  shopifyCronScheduled:
+    handler: src/shopify/cron.scheduled
+    timeout: 250
+    events:
+      - schedule: rate(5 minutes)
+  installCallback:
+    handler: src/shopify/callback.handle
+    events:
+      - http:
+          path: install/callback
+          method: get
+  api:
+    handler: src/api/handler.handle
+    events:
+      - http:
+          path: api/{action}
+          method: post
+          cors: true
+          request:
+            parameters:
+              paths:
+                action: true
