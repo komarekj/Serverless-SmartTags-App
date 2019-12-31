@@ -24,12 +24,20 @@ provider:
     APP_HOST: ${self:hostConfig.url}
 
 functions:
+  # Shopify Install
   install:
     handler: src/shopify/install.handle
     events:
       - http:
           path: install
           method: get
+  installCallback:
+    handler: src/shopify/callback.handle
+    events:
+      - http:
+          path: install/callback
+          method: get
+  # Crons
   shopifyCronRegural:
     handler: src/shopify/cron.regural
     timeout: 600
@@ -40,12 +48,7 @@ functions:
     timeout: 250
     events:
       - schedule: rate(5 minutes)
-  installCallback:
-    handler: src/shopify/callback.handle
-    events:
-      - http:
-          path: install/callback
-          method: get
+  # API Handler
   api:
     handler: src/api/handler.handle
     events:
