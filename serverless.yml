@@ -5,26 +5,28 @@ org: pixelter
 plugins:
   - serverless-offline
 
+custom:
+  shopifyConfig: ${file(./config/shopify.${self:provider.stage}.json)
+  databaseConfig: ${file(./config/database.${self:provider.stage}.json)}
+  hostConfig: ${file(./config/host.${self:provider.stage}.json)}
+
 provider:
   name: aws
   runtime: nodejs10.x
   stage: ${opt:stage, 'dev'}
-  shopifyConfig: ${file(./config/shopify.${opt:stage}.json)
-  databaseConfig: ${file(./config/database.${opt:stage}.json)}
-  hostConfig: ${file(./config/host.${opt:stage}.json)}
   environment:
     # Shopify App
-    SHOPIFY_APP_KEY: ${self:shopifyConfig.apiKey}
-    SHOPIFY_APP_SECRET: ${self:shopifyConfig.apiSecret}
-    SHOPIFY_APP_ID: ${self:shopifyConfig.id}
-    SHOPIFY_SCOPES: ${self:shopifyConfig.scopes}
+    SHOPIFY_APP_KEY: ${self:custom.shopifyConfig.apiKey}
+    SHOPIFY_APP_SECRET: ${self:custom.shopifyConfig.apiSecret}
+    SHOPIFY_APP_ID: ${self:custom.shopifyConfig.id}
+    SHOPIFY_SCOPES: ${self:custom.shopifyConfig.scopes}
     # Database
-    DB_URL: ${self:databaseConfig.url}
+    DB_URL: ${self:custom.databaseConfig.url}
     # Host
-    APP_HOST: ${self:hostConfig.url}
+    APP_HOST: ${self:custom.hostConfig.url}
 
 functions:
-  # Shopify Install
+  # Shopify Installl
   install:
     handler: src/shopify/install.handle
     events:
